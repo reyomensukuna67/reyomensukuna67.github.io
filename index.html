@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gaming Hub Pro</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Animated Background */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, #001f3f, #003366, #000814);
+    animation: moveBG 10s linear infinite;
+    z-index: -1;
+}
+
+@keyframes moveBG {
+    0% { transform: translate(0,0); }
+    50% { transform: translate(-25%, -25%); }
+    100% { transform: translate(0,0); }
+}
+
+/* Navbar */
+nav {
+    padding: 15px;
+    display: flex;
+    justify-content: space-around;
+    background: rgba(0,0,0,0.7);
+}
+
+nav a {
+    color: cyan;
+    text-decoration: none;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 60px;
+}
+
+/* Button */
+button {
+    padding: 10px 20px;
+    background: cyan;
+    border: none;
+    cursor: pointer;
+}
+
+/* Login Box */
+#loginBox {
+    display: none;
+    background: black;
+    padding: 20px;
+    position: fixed;
+    top: 30%;
+    left: 40%;
+}
+
+/* Chatbox */
+#chat {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 250px;
+    background: black;
+    padding: 10px;
+}
+
+#messages {
+    height: 100px;
+    overflow-y: auto;
+    font-size: 12px;
+}
+
+/* Game Canvas */
+canvas {
+    background: black;
+    display: block;
+    margin: 20px auto;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <a href="#">Home</a>
+    <a href="#" onclick="openLogin()">Login</a>
+</nav>
+
+<div class="hero">
+    <h1>🎮 Gaming Hub Pro</h1>
+    <button onclick="playSound()">Click Me 🔊</button>
+</div>
+
+<!-- Fake Login -->
+<div id="loginBox">
+    <h3>Login</h3>
+    <input type="text" placeholder="Username"><br><br>
+    <input type="password" placeholder="Password"><br><br>
+    <button onclick="alert('Logged in! (fake)')">Login</button>
+</div>
+
+<!-- Chatbox -->
+<div id="chat">
+    <div id="messages"></div>
+    <input id="chatInput" placeholder="Type...">
+    <button onclick="sendMsg()">Send</button>
+</div>
+
+<!-- Mini Game -->
+<canvas id="game" width="300" height="300"></canvas>
+
+<script>
+
+/* Sound */
+function playSound() {
+    let audio = new Audio("https://www.soundjay.com/button/sounds/button-16.mp3");
+    audio.play();
+}
+
+/* Login */
+function openLogin() {
+    document.getElementById("loginBox").style.display = "block";
+}
+
+/* Chatbot */
+function sendMsg() {
+    let input = document.getElementById("chatInput");
+    let msg = input.value;
+    let box = document.getElementById("messages");
+
+    box.innerHTML += "<p>You: " + msg + "</p>";
+
+    let reply = "I am a bot 🤖";
+    if(msg.includes("hi")) reply = "Hello gamer!";
+    if(msg.includes("game")) reply = "Try the mini-game below!";
+
+    box.innerHTML += "<p>Bot: " + reply + "</p>";
+    input.value = "";
+}
+
+/* Mini Game */
+let canvas = document.getElementById("game");
+let ctx = canvas.getContext("2d");
+
+let x = 150, y = 150;
+
+document.addEventListener("keydown", e => {
+    if(e.key == "ArrowUp") y -= 10;
+    if(e.key == "ArrowDown") y += 10;
+    if(e.key == "ArrowLeft") x -= 10;
+    if(e.key == "ArrowRight") x += 10;
+    draw();
+});
+
+function draw() {
+    ctx.clearRect(0,0,300,300);
+    ctx.fillStyle = "cyan";
+    ctx.fillRect(x,y,20,20);
+}
+
+draw();
+
+</script>
+
+</body>
+</html>
