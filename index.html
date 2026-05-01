@@ -1,179 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gaming Hub Pro</title>
-
-<style>
-body {
-    margin: 0;
-    font-family: Arial;
-    color: white;
-    overflow-x: hidden;
-}
-
-/* Animated Background */
-body::before {
-    content: "";
-    position: fixed;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, #001f3f, #003366, #000814);
-    animation: moveBG 10s linear infinite;
-    z-index: -1;
-}
-
-@keyframes moveBG {
-    0% { transform: translate(0,0); }
-    50% { transform: translate(-25%, -25%); }
-    100% { transform: translate(0,0); }
-}
-
-/* Navbar */
-nav {
-    padding: 15px;
-    display: flex;
-    justify-content: space-around;
-    background: rgba(0,0,0,0.7);
-}
-
-nav a {
-    color: cyan;
-    text-decoration: none;
-}
-
-/* Hero */
-.hero {
-    text-align: center;
-    padding: 60px;
-}
-
-/* Button */
-button {
-    padding: 10px 20px;
-    background: cyan;
-    border: none;
-    cursor: pointer;
-}
-
-/* Login Box */
-#loginBox {
-    display: none;
-    background: black;
-    padding: 20px;
-    position: fixed;
-    top: 30%;
-    left: 40%;
-}
-
-/* Chatbox */
-#chat {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 250px;
-    background: black;
-    padding: 10px;
-}
-
-#messages {
-    height: 100px;
-    overflow-y: auto;
-    font-size: 12px;
-}
-
-/* Game Canvas */
-canvas {
-    background: black;
-    display: block;
-    margin: 20px auto;
-}
-</style>
+<title>Game Hub</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<nav>
-    <a href="#">Home</a>
-    <a href="#" onclick="openLogin()">Login</a>
-</nav>
+<h1>🎮 Game Hub</h1>
 
-<div class="hero">
-    <h1>🎮 Gaming Hub Pro</h1>
-    <button onclick="playSound()">Click Me 🔊</button>
+<div id="menu">
+<button onclick="show('games')">Games</button>
+<button onclick="show('profile')">Profile</button>
+<button onclick="show('shop')">Shop</button>
+<button onclick="show('leaderboard')">Leaderboard</button>
 </div>
 
-<!-- Fake Login -->
-<div id="loginBox">
-    <h3>Login</h3>
-    <input type="text" placeholder="Username"><br><br>
-    <input type="password" placeholder="Password"><br><br>
-    <button onclick="alert('Logged in! (fake)')">Login</button>
-</div>
+<h2 id="coins">Coins: 0</h2>
 
-<!-- Chatbox -->
-<div id="chat">
-    <div id="messages"></div>
-    <input id="chatInput" placeholder="Type...">
-    <button onclick="sendMsg()">Send</button>
-</div>
-
-<!-- Mini Game -->
+<!-- 🎮 GAMES -->
+<div id="games" class="page">
+<button onclick="startGame()">Start Game</button>
 <canvas id="game" width="300" height="300"></canvas>
+</div>
 
-<script>
+<!-- 🧑 PROFILE -->
+<div id="profile" class="page">
+<h3>Choose Avatar</h3>
+<img src="https://via.placeholder.com/50" onclick="setAvatar(this.src)">
+<img src="https://via.placeholder.com/50/ff0000" onclick="setAvatar(this.src)">
+<br><br>
+<img id="avatar" width="80">
+</div>
 
-/* Sound */
-function playSound() {
-    let audio = new Audio("https://www.soundjay.com/button/sounds/button-16.mp3");
-    audio.play();
-}
+<!-- 🛒 SHOP -->
+<div id="shop" class="page">
+<h3>Shop</h3>
+<button onclick="buy(50)">Buy Skin (50 coins)</button>
+</div>
 
-/* Login */
-function openLogin() {
-    document.getElementById("loginBox").style.display = "block";
-}
+<!-- 🏆 LEADERBOARD -->
+<div id="leaderboard" class="page">
+<h3>Leaderboard</h3>
+<ul id="board"></ul>
+</div>
 
-/* Chatbot */
-function sendMsg() {
-    let input = document.getElementById("chatInput");
-    let msg = input.value;
-    let box = document.getElementById("messages");
+<!-- 🎧 MUSIC -->
+<h3>🎧 Music</h3>
+<select onchange="changeMusic(this.value)">
+<option value="">None</option>
+<option value="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3">Track 1</option>
+<option value="https://cdn.pixabay.com/download/audio/2022/10/25/audio_946f.mp3">Track 2</option>
+</select>
 
-    box.innerHTML += "<p>You: " + msg + "</p>";
+<audio id="music" loop></audio>
 
-    let reply = "I am a bot 🤖";
-    if(msg.includes("hi")) reply = "Hello gamer!";
-    if(msg.includes("game")) reply = "Try the mini-game below!";
-
-    box.innerHTML += "<p>Bot: " + reply + "</p>";
-    input.value = "";
-}
-
-/* Mini Game */
-let canvas = document.getElementById("game");
-let ctx = canvas.getContext("2d");
-
-let x = 150, y = 150;
-
-document.addEventListener("keydown", e => {
-    if(e.key == "ArrowUp") y -= 10;
-    if(e.key == "ArrowDown") y += 10;
-    if(e.key == "ArrowLeft") x -= 10;
-    if(e.key == "ArrowRight") x += 10;
-    draw();
-});
-
-function draw() {
-    ctx.clearRect(0,0,300,300);
-    ctx.fillStyle = "cyan";
-    ctx.fillRect(x,y,20,20);
-}
-
-draw();
-
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>

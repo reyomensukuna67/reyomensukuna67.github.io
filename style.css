@@ -1,0 +1,31 @@
+body {
+    text-align: center;
+    background: black;
+    color: cyan;
+    font-family: Arial;
+}
+
+h1 {
+    text-shadow: 0 0 10px cyan;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    background: cyan;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: white;
+}
+
+.page {
+    display: none;
+}
+
+canvas {
+    background: black;
+    margin-top: 10px;
+}
