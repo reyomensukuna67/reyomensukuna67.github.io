@@ -50,12 +50,20 @@ let canvas = document.getElementById("game");
 let ctx = canvas.getContext("2d");
 
 let snake, food, particles;
+
 let angle = 0;
 let targetAngle = 0;
-let speed = 1.6;
+let speed = 1.5;
 
 let gameRunning, score, time, timerInterval;
 let highScore = localStorage.getItem("highScore") || 0;
+
+/* 🎮 HOLD CONTROLS */
+let turningLeft = false;
+let turningRight = false;
+
+let mobileLeft = false;
+let mobileRight = false;
 
 /* START */
 function startSnake(){
@@ -103,10 +111,18 @@ function loop(){
 /* UPDATE */
 function update(){
 
-    // smooth turning
+    // 🔥 HOLD TURNING (MAIN FIX)
+    if(turningLeft) targetAngle -= 0.12;
+    if(turningRight) targetAngle += 0.12;
+
+    if(mobileLeft) targetAngle -= 0.12;
+    if(mobileRight) targetAngle += 0.12;
+
+    // smooth rotation
     let diff = targetAngle - angle;
     if(diff > Math.PI) diff -= Math.PI*2;
     if(diff < -Math.PI) diff += Math.PI*2;
+
     angle += diff * 0.25;
 
     let head = {
@@ -125,7 +141,7 @@ function update(){
     let dx = head.x - food.x;
     let dy = head.y - food.y;
 
-    // eat food
+    // 🍎 eat
     if(Math.sqrt(dx*dx + dy*dy) < 10){
 
         for(let i=0;i<12;i++){
@@ -166,7 +182,7 @@ function update(){
 
     particles = particles.filter(p=>p.life>0);
 
-    // smooth body
+    // smooth body follow
     for(let i=1;i<snake.length;i++){
         let prev = snake[i-1];
         let curr = snake[i];
@@ -226,15 +242,23 @@ function draw(){
     });
 }
 
-/* CONTROLS PC */
+/* 🎮 PC CONTROLS */
 document.addEventListener("keydown", e=>{
-    if(e.key=="a"||e.key=="ArrowLeft") targetAngle -= 0.5;
-    if(e.key=="d"||e.key=="ArrowRight") targetAngle += 0.5;
+    if(e.key=="a"||e.key=="ArrowLeft") turningLeft = true;
+    if(e.key=="d"||e.key=="ArrowRight") turningRight = true;
 });
 
-/* 📱 MOBILE */
-function turnLeft(){ targetAngle -= 0.5; }
-function turnRight(){ targetAngle += 0.5; }
+document.addEventListener("keyup", e=>{
+    if(e.key=="a"||e.key=="ArrowLeft") turningLeft = false;
+    if(e.key=="d"||e.key=="ArrowRight") turningRight = false;
+});
+
+/* 📱 MOBILE HOLD */
+function turnLeftStart(){ mobileLeft = true; }
+function turnLeftEnd(){ mobileLeft = false; }
+
+function turnRightStart(){ mobileRight = true; }
+function turnRightEnd(){ mobileRight = false; }
 
 function boost(){
     speed = 3;
