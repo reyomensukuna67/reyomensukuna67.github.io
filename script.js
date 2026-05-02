@@ -52,7 +52,7 @@ let ctx = canvas.getContext("2d");
 let snake, food, particles;
 let angle = 0;
 let targetAngle = 0;
-let speed = 1.5;
+let speed = 1.6;
 
 let gameRunning, score, time, timerInterval;
 let highScore = localStorage.getItem("highScore") || 0;
