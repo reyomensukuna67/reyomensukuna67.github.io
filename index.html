@@ -7,53 +7,50 @@
 
 <body>
 
-<h1>🎮 Game Hub</h1>
-
-<div id="menu">
-<button onclick="show('games')">Games</button>
-<button onclick="show('profile')">Profile</button>
-<button onclick="show('shop')">Shop</button>
-<button onclick="show('leaderboard')">Leaderboard</button>
+<!-- MENU -->
+<div id="menu" class="menu">
+  <h1 class="title">🎮 GAME HUB</h1>
+  <button onclick="openGames()">PLAY</button>
 </div>
 
-<h2 id="coins">Coins: 0</h2>
-
-<!-- 🎮 GAMES -->
-<div id="games" class="page">
-<button onclick="startGame()">Start Game</button>
-<canvas id="game" width="300" height="300"></canvas>
+<!-- GAME SELECT -->
+<div id="gameSelect" class="menu hidden">
+  <button onclick="startSnake()">🐍 Snake</button>
+  <button onclick="startGuess()">🧠 Guess</button>
 </div>
 
-<!-- 🧑 PROFILE -->
-<div id="profile" class="page">
-<h3>Choose Avatar</h3>
-<img src="https://via.placeholder.com/50" onclick="setAvatar(this.src)">
-<img src="https://via.placeholder.com/50/ff0000" onclick="setAvatar(this.src)">
-<br><br>
-<img id="avatar" width="80">
+<!-- 🐍 SNAKE -->
+<div id="snakePage" class="hidden center">
+  <div>
+    <button onclick="goBack()">⬅ BACK</button>
+    <h3 id="score">Score: 0</h3>
+    <h3 id="time">Time: 0s</h3>
+    <canvas id="game" width="400" height="400"></canvas>
+  </div>
 </div>
 
-<!-- 🛒 SHOP -->
-<div id="shop" class="page">
-<h3>Shop</h3>
-<button onclick="buy(50)">Buy Skin (50 coins)</button>
+<!-- 🧠 GUESS -->
+<div id="guessPage" class="hidden center">
+  <div>
+    <button onclick="goBack()">⬅ BACK</button>
+    <h2>Guess 0–20</h2>
+    <input id="guessInput">
+    <button onclick="checkGuess()">Guess</button>
+    <p id="result"></p>
+    <p id="attempts">Attempts: 0</p>
+  </div>
 </div>
 
-<!-- 🏆 LEADERBOARD -->
-<div id="leaderboard" class="page">
-<h3>Leaderboard</h3>
-<ul id="board"></ul>
+<!-- GAME OVER -->
+<div id="gameOver" class="hidden overlay fade">
+  <div class="box">
+    <h1>GAME OVER</h1>
+    <p id="finalScore"></p>
+    <p id="finalTime"></p>
+    <button onclick="restartGame()">🔁 Restart</button>
+    <button onclick="goBack()">⬅ Menu</button>
+  </div>
 </div>
-
-<!-- 🎧 MUSIC -->
-<h3>🎧 Music</h3>
-<select onchange="changeMusic(this.value)">
-<option value="">None</option>
-<option value="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3">Track 1</option>
-<option value="https://cdn.pixabay.com/download/audio/2022/10/25/audio_946f.mp3">Track 2</option>
-</select>
-
-<audio id="music" loop></audio>
 
 <script src="script.js"></script>
 </body>

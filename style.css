@@ -1,31 +1,99 @@
 body {
+    margin: 0;
+    font-family: monospace;
     text-align: center;
-    background: black;
-    color: cyan;
-    font-family: Arial;
+
+    background: repeating-linear-gradient(
+        90deg,
+        #8b5a2b,
+        #8b5a2b 40px,
+        #7a4d25 40px,
+        #7a4d25 80px
+    );
 }
 
-h1 {
-    text-shadow: 0 0 10px cyan;
+/* HIDE FIX */
+.hidden {
+    display: none !important;
 }
 
-button {
-    margin: 5px;
-    padding: 10px;
-    background: cyan;
-    border: none;
+/* MENU */
+.menu {
+    margin-top: 150px;
+}
+
+/* 🎮 TITLE ANIMATION */
+.title {
+    font-size: 40px;
+    color: #fff;
+    text-shadow: 0 0 10px #fff;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #fff; }
+    to { text-shadow: 0 0 25px yellow; }
+}
+
+/* BUTTON ANIMATION */
+.menu button {
+    padding: 15px;
+    width: 220px;
+    margin: 15px;
+    font-size: 18px;
+    background: #c49a6c;
+    border: 4px solid #5a3a1c;
     cursor: pointer;
+
+    animation: float 2s infinite ease-in-out;
 }
 
-button:hover {
-    background: white;
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
 }
 
-.page {
-    display: none;
+/* CENTER */
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
+/* GAME */
 canvas {
-    background: black;
-    margin-top: 10px;
+    background: #a8d45a;
+    border: 10px solid #5a3a1c;
+}
+
+/* GAME OVER */
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    top: 0;
+    left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ✨ FADE IN */
+.fade {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.box {
+    background: #c49a6c;
+    padding: 30px;
+    border: 5px solid #5a3a1c;
 }
