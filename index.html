@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Game center</title>
+<title>Game Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,55 +14,61 @@
   <button onclick="setDevice('mobile')">📱 Mobile</button>
 </div>
 
-<!-- MENU -->
+<!-- 🎮 MAIN MENU -->
 <div id="menu" class="menu hidden">
   <h1 class="title">🎮 GAME HUB</h1>
   <button onclick="openGames()">PLAY</button>
 </div>
 
-<!-- GAME SELECT -->
+<!-- 🎮 GAME SELECT -->
 <div id="gameSelect" class="menu hidden">
   <button onclick="startSnake()">🐍 Snake</button>
   <button onclick="startGuess()">🧠 Guess</button>
 </div>
 
-<!-- 🐍 SNAKE -->
+<!-- 🐍 SNAKE PAGE -->
 <div id="snakePage" class="hidden center">
   <div>
     <button onclick="goBack()">⬅ BACK</button>
+    <button onclick="toggleFullscreen()">🖥️ Fullscreen</button>
+
     <h3 id="score">Score: 0</h3>
     <h3 id="time">Time: 0s</h3>
 
-    <!-- 🎮 CANVAS -->
+    <!-- 🎮 GAME CANVAS -->
     <canvas id="game" width="400" height="400"></canvas>
 
     <!-- 📱 MOBILE CONTROLS -->
     <div id="mobileControls" class="hidden">
-      <button ontouchstart="turnLeft()">⬅</button>
+      <button ontouchstart="turnLeftStart()" ontouchend="turnLeftEnd()">⬅</button>
       <button ontouchstart="boost()">⚡</button>
-      <button ontouchstart="turnRight()">➡</button>
+      <button ontouchstart="turnRightStart()" ontouchend="turnRightEnd()">➡</button>
     </div>
+
   </div>
 </div>
 
-<!-- 🧠 GUESS -->
+<!-- 🧠 GUESS GAME -->
 <div id="guessPage" class="hidden center">
   <div>
     <button onclick="goBack()">⬅ BACK</button>
+
     <h2>Guess 0–20</h2>
-    <input id="guessInput">
+    <input id="guessInput" type="number">
     <button onclick="checkGuess()">Guess</button>
+
     <p id="result"></p>
     <p id="attempts">Attempts: 0</p>
   </div>
 </div>
 
-<!-- GAME OVER -->
+<!-- 💀 GAME OVER -->
 <div id="gameOver" class="hidden overlay fade">
   <div class="box">
     <h1>GAME OVER</h1>
     <p id="finalScore"></p>
     <p id="finalTime"></p>
+
     <button onclick="restartGame()">🔁 Restart</button>
     <button onclick="goBack()">⬅ Menu</button>
   </div>
