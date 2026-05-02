@@ -7,8 +7,15 @@
 
 <body>
 
+<!-- 📱 DEVICE SELECT -->
+<div id="deviceScreen" class="menu">
+  <h1 class="title">Select Device</h1>
+  <button onclick="setDevice('pc')">💻 PC</button>
+  <button onclick="setDevice('mobile')">📱 Mobile</button>
+</div>
+
 <!-- MENU -->
-<div id="menu" class="menu">
+<div id="menu" class="menu hidden">
   <h1 class="title">🎮 GAME HUB</h1>
   <button onclick="openGames()">PLAY</button>
 </div>
@@ -25,7 +32,16 @@
     <button onclick="goBack()">⬅ BACK</button>
     <h3 id="score">Score: 0</h3>
     <h3 id="time">Time: 0s</h3>
+
+    <!-- 🎮 CANVAS -->
     <canvas id="game" width="400" height="400"></canvas>
+
+    <!-- 📱 MOBILE CONTROLS -->
+    <div id="mobileControls" class="hidden">
+      <button ontouchstart="turnLeft()">⬅</button>
+      <button ontouchstart="boost()">⚡</button>
+      <button ontouchstart="turnRight()">➡</button>
+    </div>
   </div>
 </div>
 

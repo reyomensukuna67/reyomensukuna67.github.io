@@ -1,7 +1,17 @@
 /* ===================== */
-/* FIX ELEMENT REFERENCES */
+/* 📱 DEVICE SELECT */
 /* ===================== */
+let isMobile = false;
 
+function setDevice(type){
+    isMobile = (type === "mobile");
+    document.getElementById("deviceScreen").classList.add("hidden");
+    document.getElementById("menu").classList.remove("hidden");
+}
+
+/* ===================== */
+/* 🔗 ELEMENTS */
+/* ===================== */
 const menu = document.getElementById("menu");
 const gameSelect = document.getElementById("gameSelect");
 const snakePage = document.getElementById("snakePage");
@@ -18,7 +28,11 @@ const gameOver = document.getElementById("gameOver");
 const finalScore = document.getElementById("finalScore");
 const finalTime = document.getElementById("finalTime");
 
+const mobileControls = document.getElementById("mobileControls");
+
+/* ===================== */
 /* MENU */
+/* ===================== */
 function openGames(){
     menu.classList.add("hidden");
     gameSelect.classList.remove("hidden");
@@ -36,13 +50,23 @@ let canvas = document.getElementById("game");
 let ctx = canvas.getContext("2d");
 
 let snake, food, particles;
-let angle=0, targetAngle=0, speed=2;
+let angle = 0;
+let targetAngle = 0;
+let speed = 1.5;
+
 let gameRunning, score, time, timerInterval;
 let highScore = localStorage.getItem("highScore") || 0;
 
+/* START */
 function startSnake(){
     gameSelect.classList.add("hidden");
     snakePage.classList.remove("hidden");
+
+    if(isMobile){
+        mobileControls.classList.remove("hidden");
+    } else {
+        mobileControls.classList.add("hidden");
+    }
 
     snake = [];
     for(let i=0;i<25;i++){
@@ -56,18 +80,19 @@ function startSnake(){
     time = 0;
     gameRunning = true;
 
-    scoreEl.innerText="Score: 0 | High: " + highScore;
-    timeEl.innerText="Time: 0s";
+    scoreEl.innerText = "Score: 0 | High: " + highScore;
+    timeEl.innerText = "Time: 0s";
 
     clearInterval(timerInterval);
     timerInterval = setInterval(()=>{
         time++;
-        timeEl.innerText="Time: "+time+"s";
+        timeEl.innerText = "Time: " + time + "s";
     },1000);
 
     loop();
 }
 
+/* LOOP */
 function loop(){
     if(!gameRunning) return;
     requestAnimationFrame(loop);
@@ -75,40 +100,35 @@ function loop(){
     draw();
 }
 
+/* UPDATE */
 function update(){
+
+    // smooth turning
     let diff = targetAngle - angle;
     if(diff > Math.PI) diff -= Math.PI*2;
     if(diff < -Math.PI) diff += Math.PI*2;
-    angle += diff * 0.08;
+    angle += diff * 0.1;
 
     let head = {
-        x: snake[0].x + Math.cos(angle)*speed,
-        y: snake[0].y + Math.sin(angle)*speed
+        x: snake[0].x + Math.cos(angle) * speed,
+        y: snake[0].y + Math.sin(angle) * speed
     };
 
-    if(head.x<0||head.y<0||head.x>400||head.y>400){
+    // wall collision
+    if(head.x < 0 || head.y < 0 || head.x > 400 || head.y > 400){
         endGame();
         return;
     }
 
-    for(let i=10;i<snake.length;i++){
-        let dx = head.x - snake[i].x;
-        let dy = head.y - snake[i].y;
-        if(Math.sqrt(dx*dx + dy*dy) < 6){
-            endGame();
-            return;
-        }
-    }
-
     snake.unshift(head);
 
-    let dxF = head.x - food.x;
-    let dyF = head.y - food.y;
+    let dx = head.x - food.x;
+    let dy = head.y - food.y;
 
-    if(Math.sqrt(dxF*dxF + dyF*dyF) < 12){
+    // eat food
+    if(Math.sqrt(dx*dx + dy*dy) < 10){
 
-        // 🍎 particles
-        for(let i=0;i<15;i++){
+        for(let i=0;i<12;i++){
             particles.push({
                 x: food.x,
                 y: food.y,
@@ -119,8 +139,8 @@ function update(){
         }
 
         food = {
-            x:Math.random()*360+20,
-            y:Math.random()*360+20,
+            x: Math.random()*360+20,
+            y: Math.random()*360+20,
             pulse:0
         };
 
@@ -131,92 +151,112 @@ function update(){
             localStorage.setItem("highScore", highScore);
         }
 
-        scoreEl.innerText="Score: "+score+" | High: "+highScore;
+        scoreEl.innerText = "Score: " + score + " | High: " + highScore;
 
     } else {
         snake.pop();
     }
 
-    food.pulse += 0.1;
-
+    // particles
     particles.forEach(p=>{
-        p.x+=p.vx;
-        p.y+=p.vy;
+        p.x += p.vx;
+        p.y += p.vy;
         p.life--;
     });
 
     particles = particles.filter(p=>p.life>0);
 
+    // smooth body
     for(let i=1;i<snake.length;i++){
-        let prev=snake[i-1], curr=snake[i];
-        let dx=prev.x-curr.x, dy=prev.y-curr.y;
-        let dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist>6){
-            curr.x+=dx*0.2;
-            curr.y+=dy*0.2;
+        let prev = snake[i-1];
+        let curr = snake[i];
+
+        let dx = prev.x - curr.x;
+        let dy = prev.y - curr.y;
+        let dist = Math.sqrt(dx*dx + dy*dy);
+
+        if(dist > 6){
+            curr.x += dx * 0.2;
+            curr.y += dy * 0.2;
         }
     }
 }
 
+/* DRAW */
 function draw(){
-    ctx.fillStyle="#a8d45a";
+    ctx.fillStyle = "#a8d45a";
     ctx.fillRect(0,0,400,400);
 
-    let size=6+Math.sin(food.pulse)*2;
+    // food
     ctx.beginPath();
-    ctx.arc(food.x,food.y,size,0,Math.PI*2);
-    ctx.fillStyle="red";
+    ctx.arc(food.x, food.y, 6, 0, Math.PI*2);
+    ctx.fillStyle = "red";
     ctx.fill();
 
-    ctx.lineWidth=12;
-    ctx.lineCap="round";
+    // snake
+    ctx.lineWidth = 10;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "blue";
 
-    let grad=ctx.createLinearGradient(0,0,400,0);
-    grad.addColorStop(0,"red");
-    grad.addColorStop(0.5,"yellow");
-    grad.addColorStop(1,"blue");
-
-    ctx.strokeStyle=grad;
     ctx.beginPath();
-    ctx.moveTo(snake[0].x,snake[0].y);
+    ctx.moveTo(snake[0].x, snake[0].y);
 
     for(let i=1;i<snake.length;i++){
-        ctx.lineTo(snake[i].x,snake[i].y);
+        ctx.lineTo(snake[i].x, snake[i].y);
     }
+
     ctx.stroke();
 
-    let head=snake[0];
+    // eyes
+    let head = snake[0];
     ctx.save();
-    ctx.translate(head.x,head.y);
+    ctx.translate(head.x, head.y);
     ctx.rotate(angle);
-    ctx.fillStyle="white";
+    ctx.fillStyle = "white";
     ctx.beginPath();
     ctx.arc(-3,-3,2,0,Math.PI*2);
     ctx.arc(3,-3,2,0,Math.PI*2);
     ctx.fill();
     ctx.restore();
 
-    ctx.fillStyle="orange";
+    // particles
+    ctx.fillStyle = "orange";
     particles.forEach(p=>{
         ctx.fillRect(p.x,p.y,3,3);
     });
 }
 
-/* CONTROLS */
+/* CONTROLS PC */
 document.addEventListener("keydown", e=>{
-    if(e.key=="w"||e.key=="ArrowUp") targetAngle=-Math.PI/2;
-    if(e.key=="s"||e.key=="ArrowDown") targetAngle=Math.PI/2;
-    if(e.key=="a"||e.key=="ArrowLeft") targetAngle=Math.PI;
-    if(e.key=="d"||e.key=="ArrowRight") targetAngle=0;
+    if(e.key=="a"||e.key=="ArrowLeft") targetAngle -= 0.3;
+    if(e.key=="d"||e.key=="ArrowRight") targetAngle += 0.3;
 });
+
+/* 📱 MOBILE */
+function turnLeft(){ targetAngle -= 0.3; }
+function turnRight(){ targetAngle += 0.3; }
+
+function boost(){
+    speed = 3;
+    setTimeout(()=>{ speed = 1.5; },200);
+}
+
+/* 🖥️ FULLSCREEN */
+function toggleFullscreen(){
+    if(!document.fullscreenElement){
+        document.documentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+}
 
 /* GAME OVER */
 function endGame(){
-    gameRunning=false;
+    gameRunning = false;
     clearInterval(timerInterval);
 
-    finalScore.innerText="Score: "+score;
-    finalTime.innerText="Time: "+time+"s";
+    finalScore.innerText = "Score: " + score;
+    finalTime.innerText = "Time: " + time + "s";
 
     gameOver.classList.remove("hidden");
 }
@@ -236,15 +276,15 @@ function startGuess(){
     gameSelect.classList.add("hidden");
     guessPage.classList.remove("hidden");
 
-    number=Math.floor(Math.random()*21);
-    attempts=0;
+    number = Math.floor(Math.random()*21);
+    attempts = 0;
 
-    attemptsEl.innerText="Attempts: 0";
-    result.innerText="";
+    attemptsEl.innerText = "Attempts: 0";
+    result.innerText = "";
 }
 
 function checkGuess(){
-    let val=parseInt(guessInput.value);
+    let val = parseInt(guessInput.value);
 
     if(isNaN(val)||val<0||val>20){
         result.innerText="Enter 0–20!";
