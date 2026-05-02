@@ -248,8 +248,8 @@ document.addEventListener("keydown", e=>{
     if(e.key=="a"||e.key=="ArrowLeft") turningLeft = true;
     if(e.key=="d"||e.key=="ArrowRight") turningRight = true;
 
-    if(e.key=="w"||e.key=="ArrowUp") speed = 2.5;
-    if(e.key=="s"||e.key=="ArrowDown") speed = 1;
+    if(e.key=="w"||e.key=="ArrowUp") speed = 1.5;
+    if(e.key=="s"||e.key=="ArrowDown") speed = 1.5;
 });
 
 document.addEventListener("keyup", e=>{
