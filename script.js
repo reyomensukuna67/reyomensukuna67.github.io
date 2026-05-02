@@ -107,7 +107,7 @@ function update(){
     let diff = targetAngle - angle;
     if(diff > Math.PI) diff -= Math.PI*2;
     if(diff < -Math.PI) diff += Math.PI*2;
-    angle += diff * 0.1;
+    angle += diff * 0.25;
 
     let head = {
         x: snake[0].x + Math.cos(angle) * speed,
@@ -228,13 +228,13 @@ function draw(){
 
 /* CONTROLS PC */
 document.addEventListener("keydown", e=>{
-    if(e.key=="a"||e.key=="ArrowLeft") targetAngle -= 0.3;
-    if(e.key=="d"||e.key=="ArrowRight") targetAngle += 0.3;
+    if(e.key=="a"||e.key=="ArrowLeft") targetAngle -= 0.5;
+    if(e.key=="d"||e.key=="ArrowRight") targetAngle += 0.5;
 });
 
 /* 📱 MOBILE */
-function turnLeft(){ targetAngle -= 0.3; }
-function turnRight(){ targetAngle += 0.3; }
+function turnLeft(){ targetAngle -= 0.5; }
+function turnRight(){ targetAngle += 0.5; }
 
 function boost(){
     speed = 3;
