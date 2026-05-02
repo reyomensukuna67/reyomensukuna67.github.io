@@ -28,8 +28,6 @@ const gameOver = document.getElementById("gameOver");
 const finalScore = document.getElementById("finalScore");
 const finalTime = document.getElementById("finalTime");
 
-const mobileControls = document.getElementById("mobileControls");
-
 /* ===================== */
 /* MENU */
 /* ===================== */
@@ -62,8 +60,13 @@ let highScore = localStorage.getItem("highScore") || 0;
 let turningLeft = false;
 let turningRight = false;
 
-let mobileLeft = false;
-let mobileRight = false;
+/* 🕹️ JOYSTICK */
+let joystickActive = false;
+let joystickX = 0;
+let joystickCenterX = 0;
+
+const joystickBase = document.getElementById("joystickBase");
+const joystickStick = document.getElementById("joystickStick");
 
 /* START */
 function startSnake(){
@@ -71,9 +74,9 @@ function startSnake(){
     snakePage.classList.remove("hidden");
 
     if(isMobile){
-        mobileControls.classList.remove("hidden");
+        document.getElementById("joystickContainer").classList.remove("hidden");
     } else {
-        mobileControls.classList.add("hidden");
+        document.getElementById("joystickContainer").classList.add("hidden");
     }
 
     snake = [];
@@ -111,12 +114,14 @@ function loop(){
 /* UPDATE */
 function update(){
 
-    // 🔥 HOLD TURNING (MAIN FIX)
+    // HOLD TURN
     if(turningLeft) targetAngle -= 0.12;
     if(turningRight) targetAngle += 0.12;
 
-    if(mobileLeft) targetAngle -= 0.12;
-    if(mobileRight) targetAngle += 0.12;
+    // JOYSTICK TURN
+    if(joystickActive){
+        targetAngle += joystickX * 0.002;
+    }
 
     // smooth rotation
     let diff = targetAngle - angle;
@@ -141,7 +146,7 @@ function update(){
     let dx = head.x - food.x;
     let dy = head.y - food.y;
 
-    // 🍎 eat
+    // eat food
     if(Math.sqrt(dx*dx + dy*dy) < 10){
 
         for(let i=0;i<12;i++){
@@ -182,7 +187,7 @@ function update(){
 
     particles = particles.filter(p=>p.life>0);
 
-    // smooth body follow
+    // smooth body
     for(let i=1;i<snake.length;i++){
         let prev = snake[i-1];
         let curr = snake[i];
@@ -203,13 +208,11 @@ function draw(){
     ctx.fillStyle = "#a8d45a";
     ctx.fillRect(0,0,400,400);
 
-    // food
     ctx.beginPath();
     ctx.arc(food.x, food.y, 6, 0, Math.PI*2);
     ctx.fillStyle = "red";
     ctx.fill();
 
-    // snake
     ctx.lineWidth = 10;
     ctx.lineCap = "round";
     ctx.strokeStyle = "blue";
@@ -223,7 +226,6 @@ function draw(){
 
     ctx.stroke();
 
-    // eyes
     let head = snake[0];
     ctx.save();
     ctx.translate(head.x, head.y);
@@ -235,7 +237,6 @@ function draw(){
     ctx.fill();
     ctx.restore();
 
-    // particles
     ctx.fillStyle = "orange";
     particles.forEach(p=>{
         ctx.fillRect(p.x,p.y,3,3);
@@ -246,23 +247,45 @@ function draw(){
 document.addEventListener("keydown", e=>{
     if(e.key=="a"||e.key=="ArrowLeft") turningLeft = true;
     if(e.key=="d"||e.key=="ArrowRight") turningRight = true;
+
+    if(e.key=="w"||e.key=="ArrowUp") speed = 2.5;
+    if(e.key=="s"||e.key=="ArrowDown") speed = 1;
 });
 
 document.addEventListener("keyup", e=>{
     if(e.key=="a"||e.key=="ArrowLeft") turningLeft = false;
     if(e.key=="d"||e.key=="ArrowRight") turningRight = false;
+
+    if(e.key=="w"||e.key=="ArrowUp") speed = 1.5;
+    if(e.key=="s"||e.key=="ArrowDown") speed = 1.5;
 });
 
-/* 📱 MOBILE HOLD */
-function turnLeftStart(){ mobileLeft = true; }
-function turnLeftEnd(){ mobileLeft = false; }
+/* 🕹️ JOYSTICK */
+if(joystickBase){
 
-function turnRightStart(){ mobileRight = true; }
-function turnRightEnd(){ mobileRight = false; }
+    joystickBase.addEventListener("touchstart", e=>{
+        joystickActive = true;
+        let rect = joystickBase.getBoundingClientRect();
+        joystickCenterX = rect.left + rect.width/2;
+    });
 
-function boost(){
-    speed = 3;
-    setTimeout(()=>{ speed = 1.5; },200);
+    joystickBase.addEventListener("touchmove", e=>{
+        if(!joystickActive) return;
+
+        let touch = e.touches[0];
+        let dx = touch.clientX - joystickCenterX;
+
+        joystickX = dx;
+
+        let limited = Math.max(-40, Math.min(40, dx));
+        joystickStick.style.left = (35 + limited) + "px";
+    });
+
+    joystickBase.addEventListener("touchend", ()=>{
+        joystickActive = false;
+        joystickX = 0;
+        joystickStick.style.left = "35px";
+    });
 }
 
 /* 🖥️ FULLSCREEN */
