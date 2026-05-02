@@ -12,11 +12,17 @@ body {
     );
 }
 
-.hidden { display: none !important; }
+/* HIDE */
+.hidden {
+    display: none !important;
+}
 
-.menu { margin-top: 150px; }
+/* MENU */
+.menu {
+    margin-top: 150px;
+}
 
-/* ✨ GLOW */
+/* TITLE GLOW */
 .title {
     font-size: 40px;
     color: #fff;
@@ -28,8 +34,8 @@ body {
     to { text-shadow: 0 0 25px yellow; }
 }
 
-/* 🎮 FLOAT BUTTONS */
-button {
+/* BUTTONS */
+.menu button {
     padding: 15px;
     width: 220px;
     margin: 15px;
@@ -54,30 +60,10 @@ button {
     height: 100vh;
 }
 
-/* GAME */
+/* CANVAS */
 canvas {
     background: #a8d45a;
     border: 10px solid #5a3a1c;
-}
-
-/* 📱 MOBILE CONTROLS */
-#mobileControls {
-    position: fixed;
-    bottom: 20px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-#mobileControls button {
-    width: 70px;
-    height: 70px;
-    font-size: 25px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(0,0,0,0.5);
-    color: white;
 }
 
 /* GAME OVER */
@@ -107,4 +93,30 @@ canvas {
     background: #c49a6c;
     padding: 30px;
     border: 5px solid #5a3a1c;
+}
+
+/* 🎮 JOYSTICK */
+#joystickContainer {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#joystickBase {
+    width: 120px;
+    height: 120px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 50%;
+    position: relative;
+}
+
+#joystickStick {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    left: 35px;
+    top: 35px;
 }
