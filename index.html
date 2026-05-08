@@ -3,6 +3,8 @@
 <head>
 <title>Game Hub</title>
 <link rel="stylesheet" href="style.css">
+<!-- ✅ Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -14,29 +16,59 @@
   <button onclick="setDevice('mobile')">📱 Mobile</button>
 </div>
 
+<!-- 👤 USERNAME PROMPT -->
+<div id="usernamePage" class="menu hidden">
+  <h1 class="title">🎮 GAME HUB</h1>
+  <h2 style="color:#fff;">Enter your name</h2>
+  <input id="usernameInput" type="text" maxlength="16" placeholder="Your name..." style="padding:10px;font-size:18px;width:200px;background:#c49a6c;border:3px solid #5a3a1c;font-family:monospace;">
+  <br><br>
+  <button onclick="saveUsername()">CONTINUE ➡</button>
+  <p id="usernameError" style="color:red;"></p>
+</div>
+
 <!-- 🎮 MAIN MENU -->
 <div id="menu" class="menu hidden">
   <h1 class="title">🎮 GAME HUB</h1>
+  <p style="color:#ffe8c0;font-size:14px;">👤 Playing as: <strong id="displayUsername"></strong></p>
   <button onclick="openGames()">PLAY</button>
+  <button onclick="openLeaderboard()">🏆 LEADERBOARD</button>
 </div>
 
 <!-- 🎮 GAME SELECT -->
 <div id="gameSelect" class="menu hidden">
+  <h2 class="title">Choose Game</h2>
   <button onclick="startSnake()">🐍 Snake</button>
   <button onclick="startGuess()">🧠 Guess</button>
+  <br>
+  <button onclick="goBack()" style="margin-top:20px;background:#8b5a2b;">⬅ Back</button>
+</div>
+
+<!-- 🏆 LEADERBOARD PAGE -->
+<div id="leaderboardPage" class="menu hidden">
+  <h1 class="title">🏆 LEADERBOARD</h1>
+
+  <div class="lb-tabs">
+    <button class="lb-tab active" onclick="switchTab('global')">🌍 Global</button>
+    <button class="lb-tab" onclick="switchTab('snake')">🐍 Snake</button>
+    <button class="lb-tab" onclick="switchTab('guess')">🧠 Guess</button>
+  </div>
+
+  <div id="lbLoading" style="color:#fff;margin:20px;">Loading...</div>
+  <div id="lbTable" class="lb-table hidden"></div>
+
+  <br>
+  <button onclick="goBack()">⬅ Back</button>
 </div>
 
 <!-- 🐍 SNAKE PAGE -->
 <div id="snakePage" class="hidden center">
   <div>
-
     <button onclick="goBack()">⬅ BACK</button>
     <button onclick="toggleFullscreen()">🖥️ Fullscreen</button>
 
     <h3 id="score">Score: 0</h3>
     <h3 id="time">Time: 0s</h3>
 
-    <!-- 🎮 GAME -->
     <canvas id="game" width="400" height="400"></canvas>
 
     <!-- 📱 JOYSTICK -->
@@ -45,7 +77,6 @@
         <div id="joystickStick"></div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -63,14 +94,26 @@
   </div>
 </div>
 
-<!-- 💀 GAME OVER -->
+<!-- 💀 GAME OVER (Snake) -->
 <div id="gameOver" class="hidden overlay fade">
   <div class="box">
     <h1>GAME OVER</h1>
     <p id="finalScore"></p>
     <p id="finalTime"></p>
+    <p id="savingMsg" style="color:#5a3a1c;font-size:14px;">Saving score...</p>
 
     <button onclick="restartGame()">🔁 Restart</button>
+    <button onclick="goBack()">⬅ Menu</button>
+  </div>
+</div>
+
+<!-- 🎉 GUESS WIN -->
+<div id="guessWin" class="hidden overlay fade">
+  <div class="box">
+    <h1>🎉 YOU GOT IT!</h1>
+    <p id="winAttempts"></p>
+    <p id="savingMsgGuess" style="color:#5a3a1c;font-size:14px;">Saving score...</p>
+    <button onclick="restartGuess()">🔁 Play Again</button>
     <button onclick="goBack()">⬅ Menu</button>
   </div>
 </div>

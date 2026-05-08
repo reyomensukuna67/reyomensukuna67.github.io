@@ -19,7 +19,8 @@ body {
 
 /* MENU */
 .menu {
-    margin-top: 150px;
+    margin-top: 80px;
+    padding-bottom: 40px;
 }
 
 /* TITLE GLOW */
@@ -31,24 +32,28 @@ body {
 
 @keyframes glow {
     from { text-shadow: 0 0 10px #fff; }
-    to { text-shadow: 0 0 25px yellow; }
+    to   { text-shadow: 0 0 25px yellow; }
 }
 
 /* BUTTONS */
 .menu button {
     padding: 15px;
     width: 220px;
-    margin: 15px;
+    margin: 10px;
     font-size: 18px;
+    font-family: monospace;
     background: #c49a6c;
     border: 4px solid #5a3a1c;
     cursor: pointer;
     animation: float 2s infinite ease-in-out;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @keyframes float {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-5px); }
     100% { transform: translateY(0); }
 }
 
@@ -64,9 +69,10 @@ body {
 canvas {
     background: #a8d45a;
     border: 10px solid #5a3a1c;
+    display: block;
 }
 
-/* GAME OVER */
+/* GAME OVER / WIN OVERLAY */
 .overlay {
     position: fixed;
     width: 100%;
@@ -74,10 +80,10 @@ canvas {
     background: rgba(0,0,0,0.7);
     top: 0;
     left: 0;
-
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 100;
 }
 
 .fade {
@@ -86,7 +92,7 @@ canvas {
 
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+    to   { opacity: 1; transform: scale(1); }
 }
 
 .box {
@@ -119,4 +125,94 @@ canvas {
     position: absolute;
     left: 35px;
     top: 35px;
+}
+
+/* ============================================================ */
+/* 🏆 LEADERBOARD                                               */
+/* ============================================================ */
+
+/* Tab buttons */
+.lb-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.lb-tab {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: monospace;
+    background: #c49a6c;
+    border: 3px solid #5a3a1c;
+    cursor: pointer;
+    width: auto !important;
+    animation: none !important;
+    opacity: 0.6;
+}
+
+.lb-tab.active {
+    opacity: 1;
+    background: #ffe8c0;
+    border-color: #3a1a00;
+}
+
+/* Table wrapper */
+.lb-table {
+    margin: 0 auto;
+    max-width: 600px;
+    background: rgba(0,0,0,0.35);
+    border: 3px solid #5a3a1c;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 90%;
+}
+
+.lb-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.lb-table th {
+    background: #5a3a1c;
+    color: #ffe8c0;
+    padding: 12px 8px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.lb-table td {
+    padding: 10px 8px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 15px;
+}
+
+.lb-table tr:last-child td {
+    border-bottom: none;
+}
+
+.lb-table tr:hover td {
+    background: rgba(255,255,255,0.08);
+}
+
+/* Highlight current player's row */
+.lb-table tr.my-row td {
+    background: rgba(255, 232, 100, 0.18);
+    color: #ffe87a;
+    font-weight: bold;
+}
+
+/* Username input style */
+#usernameInput {
+    display: block;
+    margin: 0 auto 10px auto;
+    padding: 10px;
+    font-size: 18px;
+    font-family: monospace;
+    width: 200px;
+    background: #c49a6c;
+    border: 3px solid #5a3a1c;
+    text-align: center;
 }
