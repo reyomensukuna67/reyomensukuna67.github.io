@@ -3,8 +3,8 @@
 /* ⚠️  REPLACE these two values with your own from Supabase!   */
 /*    Dashboard → Project Settings → API                        */
 /* ============================================================ */
-const SUPABASE_URL  = "https://YOUR_PROJECT.supabase.co";   // ← CHANGE THIS
-const SUPABASE_KEY  = "YOUR_ANON_PUBLIC_KEY";               // ← CHANGE THIS
+const SUPABASE_URL  = "https://nidjlwrdxvtkhtqglgfg.supabase.co";   // ← CHANGE THIS
+const SUPABASE_KEY  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pZGpsd3JkeHZ0a2h0cWdsZ2ZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMjUxODIsImV4cCI6MjA5MzgwMTE4Mn0.622BxPy1DUYarHCgSaDfKQfjyDCOOVeWvmtxeWgqNHk";               // ← CHANGE THIS
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
